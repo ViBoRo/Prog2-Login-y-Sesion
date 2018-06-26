@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<!-- login.css -->
+	<link rel="stylesheet" type="text/css" href="css/estilos.css">
+	<title>Login Practica</title>
+</head>
+
+
+<body>
+
+	<!--formulario login-->
+	<div class="login">
+		<div class="form">
+			<form class="login-form">
+				<input type="text" id="inputusername" placeholder="username" />
+				<input type="password" id="inputpassword" placeholder="password" />
+				<button type="submit" id="botonlogin" onclick="sendlogin()">login</button>
+			</form>
+		</div>
+	</div>
+
+
+
+	<script>
+		var url = "http://localhost:8081";
+
+		function sendlogin() {
+
+			var username = document.getElementById("inputusername").value
+			var password = document.getElementById("inputpassword").value
+
+			fetch(url + "login/?nombre=" + username + "&password=" + password).then(
+				function(response) {
+					if (response.status >= 200 && response.status < 300) {
+						var payLoad = response.json();
+						return payLoad
+					} else {
+						if (response.status >= 400 && response.status < 500) {
+							campoUsuario.style.borderColor = "#FD5D5D";
+							campoPassword.style.borderColor = "#FD5D5D";
+							$("#error_campos_incorrectos").fadeIn(150)
+						}
+						if (response.status >= 500 && response.status < 600) {
+							alert("Internal Server Error");
+							window.location.reload(false)
+						}
+					}
+				})
+		}.then(function(userData)) {
+
+			console.log(JSON.stringify(userData))
+
+		}
+
+	</script>
+
+</body>
